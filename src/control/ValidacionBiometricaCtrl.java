@@ -7,25 +7,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import model.FunctionsModel;
 import model.ValidacionBiometrica;
 import view.MainScreen;
 
-public class ValidacionBiometricaCtrl {
+public class ValidacionBiometricaCtrl extends MainController{
 	
 	private ConnectionCtrl conn = ConnectionCtrl.getConnection();
 	private ValidacionBiometrica vModel;
 	private MainScreen ms;
-	 private String sqlSelect = "select * from EOC.BIXU_TYPIFICATIONACTIONS where contextaction in ('idBiometrics', 'idNonBiometrics', 'idThirdParty')";		// TODO Auto-generated method stub
+	private String sqlSelect = "select * from EOC.BIXU_TYPIFICATIONACTIONS where contextaction in ('idBiometrics', 'idNonBiometrics', 'idThirdParty')";		// TODO Auto-generated method stub
 	private String sqlUpdate;
+	PreparedStatement ps;
 	
-	public ValidacionBiometricaCtrl(ValidacionBiometrica vModel, MainScreen ms) {
+	public ValidacionBiometricaCtrl(FunctionsModel vModel, MainScreen ms) {
 		this.ms = ms;
 		this.vModel = vModel;
 		isActivated();
 		setSQLs();
+		setPreviewText();
 	}
 	
 	private void setSQLs() {
@@ -33,26 +37,30 @@ public class ValidacionBiometricaCtrl {
 
 	}
 	
-	public void initController() {
+	private void setPreviewText(){
 		Image img;
 		try {
 			if (!vModel.isStatus()) {
-				img = ImageIO.read(getClass().getResource("/resources/Green-Up-Arrow.bmp"));
+//				img = ImageIO.read(getClass().getResource("/resources/Green-Up-Arrow.bmp"));
 				ms.getActDesactBiometricButton().setText("Activar validacion biometrica");
 			} else {
-				img = ImageIO.read(getClass().getResource("/resources/Descenso.bmp"));
+//				img = ImageIO.read(getClass().getResource("/resources/Descenso.bmp"));
 				ms.getActDesactBiometricButton().setText("Desactivar validacion biometrica");
 			}
-			ms.getActDesactBiometricButton().setIcon(new ImageIcon(img));
-		} catch (IOException e1) {
+//			ms.getActDesactBiometricButton().setIcon(new ImageIcon(img));
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		ms.getActDesactBiometricButton().addActionListener(e -> changeBiometricValidation(!vModel.isStatus()));
 	}
+//	
+//	@Override
+//	public void initController(ButtonModel bm) {
+//		
+//		bm.addActionListener(e -> changeBiometricValidation(!vModel.isStatus()));
+//	}
 	
 	public boolean isActivated() {
-		PreparedStatement ps;
 		try {
 			ps = conn.con.prepareStatement(sqlSelect);
 			ResultSet rs = ps.executeQuery();
@@ -70,25 +78,41 @@ public class ValidacionBiometricaCtrl {
 	public void changeBiometricValidation(boolean status){
 		String msg = !vModel.isStatus() ? "activada" : "desactivada";
 		
+		String showMessage = !vModel.isStatus() ? "Validaci贸n biom茅trica est谩 desactivada. \n驴Deseas activarla?" : "Validaci贸n biom茅trica est谩 activada. \n驴Deseas desactivarla?";
+		
+		int response = JOptionPane.showConfirmDialog(ms, showMessage, "Atencion", JOptionPane.YES_NO_OPTION);
+		System.out.println(response);
+
 		try {
-			PreparedStatement ps = conn.con.prepareStatement(sqlUpdate);
-			ResultSet rs = ps.executeQuery();
-			JOptionPane.showMessageDialog(null, "Validaci髇 biom閠rica " + msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+			if (response == 0) {
+				ps = conn.con.prepareStatement(sqlUpdate);
+				System.out.println(sqlUpdate);
+				ResultSet rs = ps.executeQuery();
+				JOptionPane.showMessageDialog(null, "Validaci贸n biom茅trica " + msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+				setSQLs();
+				isActivated();
+//				initController();
+				
+			}
 			
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error en la activaci髇/desactivaci髇 \n " + e,  "Info", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error en la activaci贸n/desactivaci贸n \n " + e,  "Info", JOptionPane.ERROR_MESSAGE);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(e);
 		}
 		
-		isActivated();
-		initController();
 		
 	}
 	
 	int boolToInt(Boolean b) {
 	    return b.compareTo(false);
+	}
+
+	@Override
+	protected void executeAction() {
+		changeBiometricValidation(!vModel.isStatus());
+		
 	}
 
 }

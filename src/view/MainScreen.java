@@ -2,20 +2,34 @@ package view;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.AttributedCharacterIterator;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,6 +38,10 @@ public class MainScreen extends JFrame {
 	
 	private JTextField calc;
 	private JButton actDesactBiometricButton,b2,b3,b4,b5,b6,b7,b8,b9;
+	private JMenuBar mb;
+	private JMenu menuAjustes;
+	private JMenuItem menuItemActDesactValidBio;
+	private JMenuItem menuItemChangeValCredVersion;
 	
 	private JPanel headerPanel, leftPanel, rightPanel, bottomPanel, mainPanel;
 	
@@ -37,6 +55,14 @@ public class MainScreen extends JFrame {
 		setup();
 	}
 	
+	public JMenuItem getMenuItemChangeValCredVersion() {
+		return menuItemChangeValCredVersion;
+	}
+	
+	public void setMenuItemChangeValCredVersion(JMenuItem menuItemChangeValCredVersion) {
+		this.menuItemChangeValCredVersion = menuItemChangeValCredVersion;
+	}
+	
 	public JButton getActDesactBiometricButton() {
 		return actDesactBiometricButton;
 	}
@@ -45,50 +71,58 @@ public class MainScreen extends JFrame {
 		this.actDesactBiometricButton = actDesactBiometricButton;
 	}
 	
+	public JMenuItem getMenuItemActDesactValidBio() {
+		return menuItemActDesactValidBio;
+	}
+	
+	public void setMenuItemActDesactValidBio(JMenuItem menuItemActDesactValidBio) {
+		this.menuItemActDesactValidBio = menuItemActDesactValidBio;
+	}
+	
 	private void setup() {
 		 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setResizable(true);
-		setTitle("Calculadora");
-		setBounds(0,0,screenSize.width, screenSize.height);
+		setTitle("Oneclick Helper");
+		setBounds(0,0,screenSize.width - 600, screenSize.height - 400);
 		setLocation(50,50);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		
-	}
-	
-	private void changeActDesactBiometricButtonColor() {
-		
-
-	}
+	}	
 	
 	private void layoutComponents() {
 			
 			
 			headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			mb.add(menuAjustes);
+			menuAjustes.add(menuItemActDesactValidBio);
+			menuAjustes.add(menuItemChangeValCredVersion);
+//			headerPanel.add(actDesactBiometricButton);
+			headerPanel.add(mb);
 			
-			headerPanel.add(actDesactBiometricButton);
-			headerPanel.add(new JButton("Sup.2"));
-			headerPanel.add(new JButton("Sup.3"));
-			headerPanel.add(new JButton("Sup.4"));
 			
 			bottomPanel = new JPanel(new FlowLayout());
-			bottomPanel.add(new JLabel("Pon texto"));
-			bottomPanel.add(new JTextField(25));
-			bottomPanel.add(new JButton("Listo"));
+			bottomPanel.add(new JLabel("Copyright"));
+
 			
 			leftPanel = new JPanel();
 			leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-			leftPanel.add(new JButton("1"));
-			leftPanel.add(new JButton("2"));
-			leftPanel.add(new JButton("3"));
+
 			
 			rightPanel = new JPanel();
 			rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-			rightPanel.add(new JButton("A"));
-			rightPanel.add(new JButton("B"));
-			rightPanel.add(new JButton("C"));
-			rightPanel.add(new JButton("D"));
+			
+			try {
+				Image img = ImageIO.read(getClass().getResource("/resources/oneclick_img.png"));
+				JLabel picLabel = new JLabel(new ImageIcon(img));
+				picLabel.setLayout(new BorderLayout());
+				mainPanel.add(picLabel, BorderLayout.SOUTH);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 			setupPanel();
 		/*
@@ -106,10 +140,10 @@ public class MainScreen extends JFrame {
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(mainPanel,BorderLayout.CENTER);
-		getContentPane().add(headerPanel,BorderLayout.NORTH);
+		getContentPane().add(mb,BorderLayout.NORTH);
 		getContentPane().add(bottomPanel,BorderLayout.SOUTH);
-		getContentPane().add(leftPanel,BorderLayout.WEST);
-		getContentPane().add(rightPanel,BorderLayout.EAST);
+//		getContentPane().add(leftPanel,BorderLayout.WEST);
+//		getContentPane().add(rightPanel,BorderLayout.EAST);
 		
 		
 }
@@ -117,7 +151,7 @@ public class MainScreen extends JFrame {
 		
 		calc = new JTextField(25);
 		
-		actDesactBiometricButton = new JButton("Activar validación biométrica");
+		actDesactBiometricButton = new JButton("Activar validaciï¿½n biomï¿½trica");
 //		actDesactBiometricButton.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent arg0) {
 //				try {
@@ -138,14 +172,11 @@ public class MainScreen extends JFrame {
 		bottomPanel = new JPanel();
 		mainPanel = new JPanel();
 		
+		mb = new JMenuBar();
+		menuAjustes = new JMenu("Ajustes");
+		menuItemActDesactValidBio = new JMenuItem("Activar/Desactivar validacion biometrica");
+		menuItemChangeValCredVersion = new JMenuItem("Cambiar versiÃ³n validaciÃ³n creditÃ­cia");
+		
 		
 	}
-	
-	
-	
-	public static void main(String[] args) {
-		
-		new MainScreen();
-	}
-
 }

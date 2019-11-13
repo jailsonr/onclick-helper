@@ -1,6 +1,6 @@
 package model;
 
-public class ValidacionBiometrica {
+public class ValidacionBiometrica extends FunctionsModel {
 	
 	private boolean status;
 
