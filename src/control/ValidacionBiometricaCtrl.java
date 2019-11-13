@@ -1,6 +1,8 @@
 package control;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import model.FunctionsModel;
@@ -25,13 +28,15 @@ public class ValidacionBiometricaCtrl extends MainController{
 	PreparedStatement ps;
 	
 	public ValidacionBiometricaCtrl(FunctionsModel vModel, MainScreen ms) {
+		super(ms);
+		this.vModel = (ValidacionBiometrica) vModel;
 		this.ms = ms;
-		this.vModel = vModel;
 		isActivated();
 		setSQLs();
 		setPreviewText();
 	}
-	
+
+
 	private void setSQLs() {
 		sqlUpdate = "update EOC.BIXU_TYPIFICATIONACTIONS set isenabled="+  boolToInt(!vModel.isStatus()) +" where contextaction in ('idBiometrics', 'idNonBiometrics', 'idThirdParty')";
 
@@ -53,9 +58,8 @@ public class ValidacionBiometricaCtrl extends MainController{
 			e1.printStackTrace();
 		}
 	}
-//	
-//	@Override
-//	public void initController(ButtonModel bm) {
+	
+//	public void initController(JMenuItem bm) {
 //		
 //		bm.addActionListener(e -> changeBiometricValidation(!vModel.isStatus()));
 //	}
@@ -78,7 +82,7 @@ public class ValidacionBiometricaCtrl extends MainController{
 	public void changeBiometricValidation(boolean status){
 		String msg = !vModel.isStatus() ? "activada" : "desactivada";
 		
-		String showMessage = !vModel.isStatus() ? "Validaci贸n biom茅trica est谩 desactivada. \n驴Deseas activarla?" : "Validaci贸n biom茅trica est谩 activada. \n驴Deseas desactivarla?";
+		String showMessage = !vModel.isStatus() ? "Validacion biometrica esta desactivada. \n緿eseas activarla?" : "Validacion biometrica esta activada. \n緿eseas desactivarla?";
 		
 		int response = JOptionPane.showConfirmDialog(ms, showMessage, "Atencion", JOptionPane.YES_NO_OPTION);
 		System.out.println(response);
@@ -88,15 +92,16 @@ public class ValidacionBiometricaCtrl extends MainController{
 				ps = conn.con.prepareStatement(sqlUpdate);
 				System.out.println(sqlUpdate);
 				ResultSet rs = ps.executeQuery();
-				JOptionPane.showMessageDialog(null, "Validaci贸n biom茅trica " + msg, "Info", JOptionPane.INFORMATION_MESSAGE);
-				setSQLs();
+				JOptionPane.showMessageDialog(null, "Validacion biometrica " + msg, "Info", JOptionPane.INFORMATION_MESSAGE);
 				isActivated();
+				setSQLs();
+				setPreviewText();
 //				initController();
 				
 			}
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error en la activaci贸n/desactivaci贸n \n " + e,  "Info", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error en la activacion/desactivacion \n " + e,  "Info", JOptionPane.ERROR_MESSAGE);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(e);
@@ -109,10 +114,10 @@ public class ValidacionBiometricaCtrl extends MainController{
 	    return b.compareTo(false);
 	}
 
+
 	@Override
 	protected void executeAction() {
 		changeBiometricValidation(!vModel.isStatus());
-		
 	}
 
 }

@@ -13,12 +13,8 @@ public class Main {
 	
 	public static void main(String[] args) {
 		ConnectionCtrl con = ConnectionCtrl.getConnection();
-		MainScreen main = new MainScreen();
-		
-		ControllerFactoryMethod factory = new ControllerFactory();
-
-		
-		
+		MainScreen ms = new MainScreen();
+				
 	}
 
 }

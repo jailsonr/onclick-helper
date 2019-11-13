@@ -29,10 +29,14 @@ import java.text.AttributedCharacterIterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import control.ValidacionBiometricaCtrl;
+import model.ValidacionBiometrica;
 
 public class MainScreen extends JFrame {
 	
@@ -46,7 +50,6 @@ public class MainScreen extends JFrame {
 	private JPanel headerPanel, leftPanel, rightPanel, bottomPanel, mainPanel;
 	
 	public MainScreen(){
-		
 		
 		init();
 		
@@ -98,12 +101,11 @@ public class MainScreen extends JFrame {
 			mb.add(menuAjustes);
 			menuAjustes.add(menuItemActDesactValidBio);
 			menuAjustes.add(menuItemChangeValCredVersion);
-//			headerPanel.add(actDesactBiometricButton);
 			headerPanel.add(mb);
 			
 			
 			bottomPanel = new JPanel(new FlowLayout());
-			bottomPanel.add(new JLabel("Copyright"));
+			bottomPanel.add(new JLabel("Copyright �"));
 
 			
 			leftPanel = new JPanel();
@@ -125,12 +127,6 @@ public class MainScreen extends JFrame {
 			
 			
 			setupPanel();
-		/*
-		 * mainPanel.add(headerPanel); mainPanel.add(leftPanel);
-		 * mainPanel.add(rightPanel); mainPanel.add(bottomPanel);
-		 */
-			
-//			add(mainPanel);
 			
 		}
 
@@ -142,8 +138,6 @@ public class MainScreen extends JFrame {
 		getContentPane().add(mainPanel,BorderLayout.CENTER);
 		getContentPane().add(mb,BorderLayout.NORTH);
 		getContentPane().add(bottomPanel,BorderLayout.SOUTH);
-//		getContentPane().add(leftPanel,BorderLayout.WEST);
-//		getContentPane().add(rightPanel,BorderLayout.EAST);
 		
 		
 }
@@ -151,20 +145,7 @@ public class MainScreen extends JFrame {
 		
 		calc = new JTextField(25);
 		
-		actDesactBiometricButton = new JButton("Activar validaci�n biom�trica");
-//		actDesactBiometricButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				try {
-//					Class.forName("oracle.jdbc.driver.OracleDriver");  
-//					Connection con=DriverManager.getConnection(  
-//							"jdbc:oracle:thin:@10.49.7.142:1591/EEOCMPP1.tdenopcl.internal","EOC","EOC");  
-//					Statement stmt=con.createStatement();  
-//					JOptionPane.showMessageDialog(getContentPane(), "Conectado");
-//				} catch (Exception e) {
-//					System.out.println(e);
-//				}
-//			}
-//		});
+		actDesactBiometricButton = new JButton("Activar validacion biometrica");
 		
 		headerPanel = new JPanel();
 		leftPanel = new JPanel();
@@ -175,7 +156,8 @@ public class MainScreen extends JFrame {
 		mb = new JMenuBar();
 		menuAjustes = new JMenu("Ajustes");
 		menuItemActDesactValidBio = new JMenuItem("Activar/Desactivar validacion biometrica");
-		menuItemChangeValCredVersion = new JMenuItem("Cambiar versión validación creditícia");
+		menuItemActDesactValidBio.addActionListener(new ClickActDesactListener(menuItemActDesactValidBio, this));
+		menuItemChangeValCredVersion = new JMenuItem("Cambiar version validacion crediticia");
 		
 		
 	}

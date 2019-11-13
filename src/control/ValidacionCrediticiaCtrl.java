@@ -1,6 +1,7 @@
 package control;
 
 import javax.swing.ButtonModel;
+import javax.swing.JMenuItem;
 
 import model.FunctionsModel;
 import model.ValidacionCrediticia;
@@ -12,16 +13,14 @@ public class ValidacionCrediticiaCtrl extends MainController{
 	private ValidacionCrediticia vModel;
 	private MainScreen ms;
 	
-	public ValidacionCrediticiaCtrl() {
-		
-	}
 
 	public ValidacionCrediticiaCtrl(FunctionsModel vModel, MainScreen ms) {
+		super(ms);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void initController(ButtonModel bm) {
+	public void initController() {
 		// TODO Auto-generated method stub
 		
 	}

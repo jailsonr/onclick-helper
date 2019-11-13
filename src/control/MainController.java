@@ -1,8 +1,18 @@
 package control;
 
 import javax.swing.ButtonModel;
+import javax.swing.JMenuItem;
+
+import model.FunctionsModel;
+import view.MainScreen;
 
 public abstract class MainController {
+	
+	public MainScreen ms;
+	
+	public MainController(MainScreen ms) {
+		this.ms = ms;
+	}
 	
 	private String sqlUpdate;
 	
@@ -11,11 +21,10 @@ public abstract class MainController {
 
 	}
 	
-	public  void initController(ButtonModel bm) {
-		System.out.println("Chamou");
-//		bm.addActionListener(e -> executeAction());
+	public  void initController() {
+		executeAction();
 	}
 
-//	protected abstract void executeAction();
+	protected abstract void executeAction();
 
 }

@@ -5,6 +5,11 @@ import model.ValidacionCrediticia;
 import view.MainScreen;
 
 public class ControllerFactory implements ControllerFactoryMethod{
+	
+
+	public ControllerFactory() {
+		
+	}
 
 	@Override
 	public MainController createController(FunctionsModel vModel, MainScreen ms) {
