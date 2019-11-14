@@ -12,20 +12,19 @@ import control.MainController;
 import control.ValidacionBiometricaCtrl;
 import model.FunctionsModel;
 import model.ValidacionBiometrica;
+import model.ValidacionCrediticia;
 
-public class ClickActDesactListener implements ActionListener {
+public class ClickActionListener implements ActionListener {
 	
-	private JMenuItem jm;
 	private MainScreen ms;
 
-	public ClickActDesactListener(JMenuItem jm, MainScreen ms) {
-		this.jm = jm;
+	public ClickActionListener(MainScreen ms) {
 		this.ms = ms;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MainController mc;
+		MainController mc = null;
 		ControllerFactoryMethod factory = new ControllerFactory();
 		FunctionsModel vModel;
 		
@@ -33,9 +32,12 @@ public class ClickActDesactListener implements ActionListener {
         if ("Activar/Desactivar validacion biometrica".equals(command)) {
         	vModel = new ValidacionBiometrica();
         	mc = factory.createController(vModel, ms);
-        	mc.initController();
-            
+        } else if ("V1".equals(command) || "V2".equals(command) || "V3".equals(command)) {
+        	vModel = new ValidacionCrediticia();
+        	mc = factory.createController(vModel, ms);
         }
+        
+        mc.initController();
 
 	}
 

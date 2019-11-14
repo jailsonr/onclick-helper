@@ -1,17 +1,9 @@
 package control;
 
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ButtonModel;
-import javax.swing.ImageIcon;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import model.FunctionsModel;
@@ -33,7 +25,6 @@ public class ValidacionBiometricaCtrl extends MainController{
 		this.ms = ms;
 		isActivated();
 		setSQLs();
-		setPreviewText();
 	}
 
 
@@ -41,28 +32,6 @@ public class ValidacionBiometricaCtrl extends MainController{
 		sqlUpdate = "update EOC.BIXU_TYPIFICATIONACTIONS set isenabled="+  boolToInt(!vModel.isStatus()) +" where contextaction in ('idBiometrics', 'idNonBiometrics', 'idThirdParty')";
 
 	}
-	
-	private void setPreviewText(){
-		Image img;
-		try {
-			if (!vModel.isStatus()) {
-//				img = ImageIO.read(getClass().getResource("/resources/Green-Up-Arrow.bmp"));
-				ms.getActDesactBiometricButton().setText("Activar validacion biometrica");
-			} else {
-//				img = ImageIO.read(getClass().getResource("/resources/Descenso.bmp"));
-				ms.getActDesactBiometricButton().setText("Desactivar validacion biometrica");
-			}
-//			ms.getActDesactBiometricButton().setIcon(new ImageIcon(img));
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-	
-//	public void initController(JMenuItem bm) {
-//		
-//		bm.addActionListener(e -> changeBiometricValidation(!vModel.isStatus()));
-//	}
 	
 	public boolean isActivated() {
 		try {
@@ -82,7 +51,7 @@ public class ValidacionBiometricaCtrl extends MainController{
 	public void changeBiometricValidation(boolean status){
 		String msg = !vModel.isStatus() ? "activada" : "desactivada";
 		
-		String showMessage = !vModel.isStatus() ? "Validacion biometrica esta desactivada. \n¿Deseas activarla?" : "Validacion biometrica esta activada. \n¿Deseas desactivarla?";
+		String showMessage = !vModel.isStatus() ? "Validacion biometrica esta desactivada. \nï¿½Deseas activarla?" : "Validacion biometrica esta activada. \nï¿½Deseas desactivarla?";
 		
 		int response = JOptionPane.showConfirmDialog(ms, showMessage, "Atencion", JOptionPane.YES_NO_OPTION);
 		System.out.println(response);
@@ -95,8 +64,6 @@ public class ValidacionBiometricaCtrl extends MainController{
 				JOptionPane.showMessageDialog(null, "Validacion biometrica " + msg, "Info", JOptionPane.INFORMATION_MESSAGE);
 				isActivated();
 				setSQLs();
-				setPreviewText();
-//				initController();
 				
 			}
 			

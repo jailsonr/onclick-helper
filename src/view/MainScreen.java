@@ -20,6 +20,7 @@ import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,10 +30,12 @@ import java.text.AttributedCharacterIterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 
 import control.ValidacionBiometricaCtrl;
@@ -45,7 +48,9 @@ public class MainScreen extends JFrame {
 	private JMenuBar mb;
 	private JMenu menuAjustes;
 	private JMenuItem menuItemActDesactValidBio;
-	private JMenuItem menuItemChangeValCredVersion;
+	private JMenu menuItemChangeValCredVersion;
+	private ButtonGroup versionGroup;
+	private JRadioButtonMenuItem radioButtonV1, radioButtonV2, radioButtonV3;
 	
 	private JPanel headerPanel, leftPanel, rightPanel, bottomPanel, mainPanel;
 	
@@ -62,7 +67,7 @@ public class MainScreen extends JFrame {
 		return menuItemChangeValCredVersion;
 	}
 	
-	public void setMenuItemChangeValCredVersion(JMenuItem menuItemChangeValCredVersion) {
+	public void setMenuItemChangeValCredVersion(JMenu menuItemChangeValCredVersion) {
 		this.menuItemChangeValCredVersion = menuItemChangeValCredVersion;
 	}
 	
@@ -105,7 +110,7 @@ public class MainScreen extends JFrame {
 			
 			
 			bottomPanel = new JPanel(new FlowLayout());
-			bottomPanel.add(new JLabel("Copyright ©"));
+			bottomPanel.add(new JLabel("Copyright ï¿½"));
 
 			
 			leftPanel = new JPanel();
@@ -156,8 +161,28 @@ public class MainScreen extends JFrame {
 		mb = new JMenuBar();
 		menuAjustes = new JMenu("Ajustes");
 		menuItemActDesactValidBio = new JMenuItem("Activar/Desactivar validacion biometrica");
-		menuItemActDesactValidBio.addActionListener(new ClickActDesactListener(menuItemActDesactValidBio, this));
-		menuItemChangeValCredVersion = new JMenuItem("Cambiar version validacion crediticia");
+		menuItemActDesactValidBio.addActionListener(new ClickActionListener(this));
+		menuItemChangeValCredVersion = new JMenu("Cambiar version validacion crediticia");
+		
+		versionGroup = new ButtonGroup();
+		
+		radioButtonV1 = new JRadioButtonMenuItem("V1");
+		radioButtonV1.addActionListener(new ClickActionListener(this));
+		radioButtonV1.setMnemonic(KeyEvent.VK_F);
+		menuItemChangeValCredVersion.add(radioButtonV1);
+		versionGroup.add(radioButtonV1);
+		
+		radioButtonV2 = new JRadioButtonMenuItem("V2");
+		radioButtonV2.addActionListener(new ClickActionListener(this));
+		radioButtonV2.setMnemonic(KeyEvent.VK_F);
+		menuItemChangeValCredVersion.add(radioButtonV2);
+		versionGroup.add(radioButtonV2);
+		
+		radioButtonV3 = new JRadioButtonMenuItem("V3");
+		radioButtonV3.addActionListener(new ClickActionListener(this));
+		radioButtonV3.setMnemonic(KeyEvent.VK_F);
+		menuItemChangeValCredVersion.add(radioButtonV3);
+		versionGroup.add(radioButtonV3);
 		
 		
 	}
